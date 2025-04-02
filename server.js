@@ -14,6 +14,7 @@ const io = new Server(server, {
     methods: ["GET", "POST", "PUT", "PATCH"],
     credentials: true,
   },
+  transports: ["websocket", "polling"],
 });
 
 app.use(express.json());
