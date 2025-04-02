@@ -11,15 +11,19 @@ const server = http.createServer(app); // ✅ Now `app` is available
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
+    origin: ["http://localhost:3000", "https://elms-tau.vercel.app"],
+    methods: ["GET", "POST", "PUT", "PATCH"],
   },
 });
 
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000", "https://elms-tau.vercel.app"], // Match frontend origins
+  methods: ["GET", "POST", "PUT", "PATCH"],
+  credentials: true,
+}));
 
 
 app.get('/api/leaves', (req, res) => {
@@ -44,23 +48,19 @@ app.use("/api/leave-balances", leaveBalanceRoutes);
 
 
 // WebSocket logic
+app.set("io", io); 
 io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
-  
-  socket.on("disconnect", () => {
-    console.log("Client disconnected:", socket.id);
-  });
+  socket.on("disconnect", () => console.log("Client disconnected:", socket.id));
 });
 
-// Attach `io` to `app`
-app.set("io", io);
-
 // Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+const mongoURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/elms";
+  mongoose 
+  .connect(mongoURI,{ useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log(`✅ MongoDB Connected`))
   .catch((err) => console.error(` MongoDB Connection Error: ${err}`));
 
 // Start the server
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(` Server running on port ${PORT}`));
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, "0.0.0.0", () => console.log(`Server on ${PORT}`));
