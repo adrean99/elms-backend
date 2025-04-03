@@ -61,16 +61,17 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error(`MongoDB Connection Error: ${err}`));
 
-  const PORT = process.env.PORT || 10000; // Restore fallback
-console.log("PORT value:", PORT); // Debug PORT
-app.listen(PORT, "0.0.0.0", () => console.log(`Server on ${PORT}`));
-  
-  // Crash detection
-  process.on("uncaughtException", (err) => {
-    console.error("Uncaught Exception:", err);
-    process.exit(1);
-  });
-  process.on("unhandledRejection", (reason, promise) => {
-    console.error("Unhandled Rejection at:", promise, "reason:", reason);
-    process.exit(1);
-  });
+  const PORT = process.env.PORT || 10000;
+console.log("PORT value:", PORT);
+const server = app.listen(PORT, "0.0.0.0", () => console.log(`Server on ${PORT}`));
+
+server.on("error", (err) => console.error("Server error:", err));
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+  process.exit(1);
+});
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  process.exit(1);
+});
