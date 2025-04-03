@@ -34,6 +34,11 @@ app.get("/test", (req, res) => {
   res.json({ message: "Server is running" });
 });
 
+app.get("/", (req, res) => {
+  console.log("Hit root route");
+  res.send("Hello from ELMS Backend");
+});
+
 console.log("Loading routes...");
 const leaveRoutes = require("./routes/leaveRoutes");
 const authRoutes = require("./routes/authRoutes");
