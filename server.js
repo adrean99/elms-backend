@@ -56,5 +56,15 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error(`MongoDB Connection Error: ${err}`));
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, "0.0.0.0", () => console.log(`Server on ${PORT}`));
+  const PORT = process.env.PORT; // Remove fallback to force Render's port
+  app.listen(PORT, "0.0.0.0", () => console.log(`Server on ${PORT}`));
+  
+  // Crash detection
+  process.on("uncaughtException", (err) => {
+    console.error("Uncaught Exception:", err);
+    process.exit(1);
+  });
+  process.on("unhandledRejection", (reason, promise) => {
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+    process.exit(1);
+  });
