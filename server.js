@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
+console.log("Starting app...");
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "https://elms-tau.vercel.app");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -24,9 +25,15 @@ app.use(cors({
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
 }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+ 
+console.log("Middleware set up");
 
-app.get("/test", (req, res) => res.json({ message: "Server is running" }));
+aapp.get("/test", (req, res) => {
+  console.log("Hit /test route");
+  res.json({ message: "Server is running" });
+});
 
+console.log("Loading routes...");
 const leaveRoutes = require("./routes/leaveRoutes");
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
@@ -39,6 +46,8 @@ app.use("/api/leaves", leaveRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/leave-balances", leaveBalanceRoutes);
+
+console.log("Routes loaded");
 
 const mongoURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/elms";
 mongoose
