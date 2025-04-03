@@ -5,10 +5,20 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://elms-tau.vercel.app");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  
+  if (req.method === "OPTIONS") {
+      return res.status(200).send();
+  }
+  
+  next();
+});
 app.use(express.json());
 app.use(cors({
-  origin: ["http://localhost:3000", "https://elms-tau.vercel.app"],
+  origin: ["https://elms-tau.vercel.app"],
   methods: ["GET", "POST", "PUT", "PATCH"],
   credentials: true,
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
