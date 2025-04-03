@@ -11,6 +11,7 @@ app.use(cors({
   origin: ["http://localhost:3000", "https://elms-tau.vercel.app"],
   methods: ["GET", "POST", "PUT", "PATCH"],
   credentials: true,
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
 }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
