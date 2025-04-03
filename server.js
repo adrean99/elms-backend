@@ -28,7 +28,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
  
 console.log("Middleware set up");
 
-aapp.get("/test", (req, res) => {
+a
+app.get("/test", (req, res) => {
   console.log("Hit /test route");
   res.json({ message: "Server is running" });
 });
