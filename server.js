@@ -7,6 +7,7 @@ const path = require("path");
 const app = express();
 console.log("Starting app...");
 app.use((req, res, next) => {
+  console.log(`Request: ${req.method} ${req.url}`);
   res.header("Access-Control-Allow-Origin", "https://elms-tau.vercel.app");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -22,7 +23,6 @@ app.use(cors({
   origin: ["https://elms-tau.vercel.app"],
   methods: ["GET", "POST", "PUT", "PATCH"],
   credentials: true,
-  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
 }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
  
